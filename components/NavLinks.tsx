@@ -41,7 +41,8 @@ const NavLinks = ({ isMobile }: NavLinksProps) => {
   return (
     <>
       {sidebarLinks.map((link) => {
-        const isActive = pathname === link.path;
+        const isActive =
+          pathname === link.path || pathname.startsWith(`${link.path}/`);
         return (
           <Link
             key={link.label}
