@@ -18,6 +18,7 @@
   max-height: 700px;
 }
 
+
 .str-video__participant-details {
   color: white;
 }
@@ -61,14 +62,6 @@
 
 .cl-logoBox {
   height: 40px;
-  display: flex;
-  justify-content: center;
-}
-
-.cl-header {
-  display: flex;
-  justify-content: center;
-  text-align: center;
 }
 .cl-dividerLine {
   background: #252a41;
@@ -76,7 +69,7 @@
 }
 
 .cl-socialButtonsIconButton {
-  border: 1px solid #565761;
+  border: 3px solid #565761;
 }
 
 .cl-internal-wkkub3 {
@@ -86,9 +79,6 @@
   color: white;
 }
 
-.cl-providerIcon__github {
-  filter: invert(1);
-}
 /* =============================== */
 
 @layer utilities {
