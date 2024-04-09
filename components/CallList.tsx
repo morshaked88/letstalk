@@ -3,10 +3,11 @@
 import { useGetCalls } from "@/hooks/useGetCalls";
 import { Call, CallRecording } from "@stream-io/video-react-sdk";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CallCard from "./CallCard";
 import { FaCalendarAlt, FaFolderOpen, FaVideo } from "react-icons/fa";
 import { PlayIcon } from "lucide-react";
+import { useToast } from "./ui/use-toast";
 
 interface CallListProps {
   type: "upcoming" | "previous" | "recordings";
@@ -17,6 +18,7 @@ const CallList = ({ type }: CallListProps) => {
     useGetCalls();
   const router = useRouter();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
+  const { toast } = useToast();
 
   const getCalls = () => {
     switch (type) {
@@ -44,11 +46,33 @@ const CallList = ({ type }: CallListProps) => {
     }
   };
 
+  useEffect(() => {
+    try {
+      const fetchRecordings = async () => {
+        const callData = await Promise.all(
+          callRecordings?.map((meeting) => meeting.queryRecordings()) ?? []
+        );
+
+        const recordings = callData
+          .filter((call) => call.recordings.length > 0)
+          .flatMap((call) => call.recordings);
+
+        setRecordings(recordings);
+      };
+
+      if (type === "recordings") {
+        fetchRecordings();
+      }
+    } catch (e) {
+      toast({ title: "Failed to fetch recordings" });
+    }
+  }, [type, callRecordings, toast]);
+
   const calls = getCalls();
   const noCallsMessage = getNoCallsMessage();
   return (
     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-      {calls && calls.length > 0 ? (
+      {calls && calls.length > 0 && !isLoading ? (
         calls.map((meeting: Call | CallRecording, i) => (
           <CallCard
             key={(meeting as Call).id}
