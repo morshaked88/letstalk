@@ -18,7 +18,6 @@
   max-height: 700px;
 }
 
-
 .str-video__participant-details {
   color: white;
 }
@@ -79,6 +78,9 @@
   color: white;
 }
 
+.cl-socialButtonsProviderIcon__github {
+  filter: invert(1);
+}
 /* =============================== */
 
 @layer utilities {
